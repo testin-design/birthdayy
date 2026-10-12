@@ -1,0 +1,45 @@
+/* Palette: tweak here */
+:root{--cream:#f8f1e7;--paper:#fbf6ee;--blush:#f1d3d0;--rose:#b86b77;--ink:#3a2a2d;--night:#120f1c;--gold:#e9c9a0;
+--serif:"Cormorant Garamond",Georgia,serif;--sans:Inter,system-ui,sans-serif;--hand:Caveat,"Segoe Script",cursive}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden;background:radial-gradient(circle at 50% 30%,#2a1d2e,var(--night) 70%);color:var(--cream);font-family:var(--sans);-webkit-tap-highlight-color:transparent}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}#stars{pointer-events:auto}#confetti{z-index:50;pointer-events:none}
+.serif{font-family:var(--serif);font-weight:500}.hand{font-family:var(--hand)}.gold{color:var(--gold)}
+.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:1.5rem;text-align:center;overflow-y:auto;z-index:2}
+.screen.on{display:flex;animation:fade 1.2s both}@keyframes fade{from{opacity:0}}
+.big{font-size:clamp(2rem,8vw,3.2rem);line-height:1.15}.screen p{font-size:1.25rem;max-width:30ch}.small{font-size:1rem!important;opacity:.8}
+.l{opacity:0;animation:rise 1.4s var(--d) both}@keyframes rise{from{opacity:0;transform:translateY(12px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+.btn{font:500 1rem var(--sans);padding:.9rem 1.6rem;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--cream);cursor:pointer;min-height:48px}
+.btn.dark{background:var(--ink);color:var(--cream);border-color:var(--ink)}.btn.sm{padding:.6rem 1.1rem;min-height:44px;font-size:.9rem}
+.btn.glow{animation:pulse 2.6s infinite;background:linear-gradient(135deg,#d9a0a6,#e9c9a0);color:var(--ink);border:0}
+@keyframes pulse{50%{box-shadow:0 0 28px 6px rgba(233,201,160,.5)}}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+#flash{position:fixed;inset:0;z-index:40;background:radial-gradient(circle,#fff6e0,#f1d3d0 60%,transparent);opacity:0;pointer-events:none;transition:opacity .9s}#flash.on{opacity:1}
+.music{position:fixed;top:max(12px,env(safe-area-inset-top));right:12px;z-index:60;width:44px;height:44px;border-radius:50%;border:1px solid var(--gold);background:rgba(18,15,28,.6);color:var(--gold);font-size:1.2rem;cursor:pointer}
+.music[aria-pressed=true]{animation:ring 2s infinite}@keyframes ring{0%{box-shadow:0 0 0 0 rgba(233,201,160,.6)}100%{box-shadow:0 0 0 16px transparent}}
+
+/* Mobile-friendly fixed page buttons */
+#bookwrap{justify-content:flex-start;padding-top:max(60px,env(safe-area-inset-top))}
+.book{height:min(calc(100vh - 200px),calc(100dvh - 200px),590px)}
+.ctrl{position:fixed;left:0;right:0;bottom:0;z-index:30;justify-content:space-between;gap:.6rem;margin:0;padding:.7rem 1rem calc(.7rem + env(safe-area-inset-bottom));background:linear-gradient(transparent,rgba(18,15,28,.92) 40%)}
+.ctrl button{width:auto;min-width:96px;height:52px;border-radius:999px;padding:0 1.2rem;font:500 1rem var(--sans)}
+.ctrl .nx{flex:1;max-width:220px;background:linear-gradient(135deg,#d9a0a6,#e9c9a0);color:var(--ink);border:0;animation:pulse 2.6s infinite}
+.ctrl span{flex:0 0 auto;min-width:60px;font-size:.95rem}
+
+/* Fix: intro button must fade in, then pulse */
+.btn.glow.l{animation:rise 1.4s var(--d) both,pulse 2.6s calc(var(--d) + 1.4s) infinite}
+
+/* Intro button: shown by script.js after the last line */
+.gbtn{opacity:0;pointer-events:none;transition:opacity 1.2s}
+.gbtn.on{opacity:1;pointer-events:auto}
+
+/* Paper-like page turn */
+.leaf{transition:none}
+.leaf.flip{transform:rotateY(-178deg);animation:turnF 1.2s cubic-bezier(.45,.05,.3,1)}
+.leaf.unf{animation:turnB 1.2s cubic-bezier(.45,.05,.3,1)}
+@keyframes turnF{0%{transform:rotateY(0)}30%{transform:rotateY(-55deg) skewY(2.5deg)}65%{transform:rotateY(-125deg) skewY(-2deg)}100%{transform:rotateY(-178deg)}}
+@keyframes turnB{0%{transform:rotateY(-178deg)}35%{transform:rotateY(-125deg) skewY(-2deg)}70%{transform:rotateY(-55deg) skewY(2.5deg)}100%{transform:rotateY(0)}}
+.front::after,.back::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(90deg,rgba(40,20,20,.35),rgba(255,255,255,.18) 35%,transparent 75%)}
+.leaf.flip .front::after,.leaf.flip .back::after,.leaf.unf .front::after,.leaf.unf .back::after{animation:shade 1.2s ease-in-out}
+@keyframes shade{0%,100%{opacity:0}50%{opacity:1}}
+.leaf.flip,.leaf.unf{filter:drop-shadow(8px 6px 10px rgba(0,0,0,.35))}

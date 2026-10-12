@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mayaluu · Chapter 23</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<!-- MUSIC -->
+<audio
+  id="song"
+  src="assets/music/Happy Birthday Durga Jii - usesuno.com.mp3"
+  loop
+  preload="none">
+</audio>
+
+<button
+  id="music"
+  class="music"
+  aria-label="Play or pause music"
+  aria-pressed="false">
+  ♫
+</button>
+
+<!-- 1. OPENING -->
+<section id="intro" class="screen on">
+  <p class="l serif big" style="--d:.4s">Hey, Durgaa… ❤️</p>
+  <p class="l small" style="--d:1.8s">I made something for you.</p>
+  <p class="l serif" style="--d:3.4s">Because today isn’t just another day…</p>
+  <p class="l serif" style="--d:5s">It’s the day the world got you. ✨</p>
+  <h1 class="l serif big gold" style="--d:6.8s">Happy 23rd Birthday, Mayaluuu ❤️</h1>
+  <div class="l" style="--d:8.6s">
+  <button id="openGift" class="btn glow" onclick="window.location.href='index1.html'">
+    Open Your Gift 🎁
+  </button>
+</div>  
+</section>
+
+
+
+<div id="toast" role="status"></div>
+<script src="script.js"></script>
+</body>
+</html>

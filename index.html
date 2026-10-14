@@ -1,50 +1,461 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mayaluu · Chapter 23</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500&family=Caveat:wght@500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#160f22">
+<title>Pookie Kitty Quiz ♡</title>
+<style>
+  :root{
+    --night:#160f22; --plum:#2b1b35; --pink:#ff8fab; --pink2:#ffc2d1;
+    --cream:#fff4f1; --gold:#ffdca8; --muted:#d8c4d8;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%;font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif}
+  body{
+    min-height:100svh;display:grid;place-items:center;overflow:hidden;color:var(--cream);
+    background:radial-gradient(ellipse at 50% 20%,#3c2547 0%,var(--night) 68%);
+  }
+  
+/* Animated background canvases */
+canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#stars {
+  z-index: 0;
+  pointer-events: none;
+}
+
+#confetti {
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* Keep quiz above the background */
+.sky,
+.moon,
+.wrap,
+.card,
+.screen {
+  position: relative;
+}
+
+.wrap {
+  z-index: 2;
+}
+
+#stars {
+  position: fixed;
+}
+
+#confetti {
+  position: fixed;
+}
+
+/* Don't let the background block quiz buttons */
+body {
+  position: relative;
+  isolation: isolate;
+}
+
+#stars {
+  pointer-events: none;
+}
+
+  .sky,.sky:before,.sky:after{position:fixed;inset:0;pointer-events:none}
+  .sky:before,.sky:after{content:"";background-repeat:repeat;opacity:.65}
+  .sky:before{background-image:radial-gradient(2px 2px at 20px 30px,#fff 98%,transparent),radial-gradient(1px 1px at 80px 90px,#ffdca8 98%,transparent),radial-gradient(1.5px 1.5px at 150px 40px,#fff 98%,transparent);background-size:190px 150px;animation:twinkle 4s ease-in-out infinite alternate}
+  .sky:after{background-image:radial-gradient(1px 1px at 50px 70px,#ffc2d1 98%,transparent),radial-gradient(2px 2px at 130px 120px,#fff 98%,transparent);background-size:230px 190px;animation:twinkle 5s ease-in-out infinite alternate-reverse}
+  @keyframes twinkle{from{opacity:.25}to{opacity:.9}}
+  .moon{position:fixed;top:7%;right:9%;font-size:clamp(2rem,6vw,4rem);filter:drop-shadow(0 0 18px #ffdca8);animation:float 4s ease-in-out infinite}
+  
+  
+  .wrap{position:relative;z-index:2;width:min(92vw,490px);padding:24px 0}
+  .card{
+    position:relative;text-align:center;padding:clamp(22px,6vw,36px) clamp(18px,5vw,34px);
+    border:1px solid #ffbed04d;border-radius:30px;
+    background:linear-gradient(145deg,#302039eF,#1b1428f5);
+    box-shadow:0 24px 80px #0007, inset 0 1px #ffffff12;
+    overflow:hidden;min-height:510px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .card:before{content:"";position:absolute;inset:8px;border:1px solid #ffd4df20;border-radius:23px;pointer-events:none}
+  .eyebrow{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
+  h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;line-height:1.12;margin:0}
+  h1{font-size:clamp(2.2rem,9vw,3.5rem);color:var(--pink2)}
+  h2{font-size:clamp(1.8rem,7vw,2.55rem);color:var(--pink2);margin-bottom:12px}
+  .subtitle{color:var(--muted);line-height:1.6;max-width:330px;margin:14px auto 20px}
+  @keyframes popIn { from { opacity: 0; transform: scale(.85) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .kitty-wrap { width: 150px; height: 135px; margin: 0 auto 6px; position: relative; }
+    .kitty { width: 130px; height: 110px; position: absolute; left: 10px; top: 16px; animation: kittyBob 2.2s ease-in-out infinite; }
+    @keyframes kittyBob { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-7px) rotate(2deg); } }
+    .ear { position: absolute; top: 0; width: 43px; height: 49px; background: #fff; border: 3px solid #e9a5bd; border-radius: 12px 22px 8px 22px; }
+    .ear.left { left: 11px; transform: rotate(-23deg); }
+    .ear.right { right: 11px; transform: rotate(23deg) scaleX(-1); }
+    .ear:after { content: ""; position: absolute; inset: 10px 9px 8px; background: #ffb7d0; border-radius: 10px 15px 5px 15px; }
+    .face { position: absolute; inset: 18px 3px 0; background: #fff; border: 3px solid #e9a5bd; border-radius: 48% 48% 45% 45%; box-shadow: inset -5px -4px #fff0f5; }
+    .eye { position: absolute; top: 40px; width: 8px; height: 13px; background: #6d3450; border-radius: 50%; }
+    .eye.left { left: 39px; } .eye.right { right: 39px; }
+    .blush { position: absolute; top: 57px; width: 17px; height: 9px; background: #ffb2ca; border-radius: 50%; }
+    .blush.left { left: 18px; } .blush.right { right: 18px; }
+    .nose { position: absolute; top: 57px; left: 50%; transform: translateX(-50%); width: 8px; height: 6px; background: #f58caf; border-radius: 50%; }
+    .mouth { position: absolute; top: 62px; left: 50%; width: 13px; height: 7px; transform: translateX(-50%); border-bottom: 2px solid #9a5975; border-radius: 50%; }
+    .bow { position: absolute; z-index: 2; top: 10px; right: 13px; color: #ff6d9f; font-size: 31px; transform: rotate(14deg); text-shadow: 1px 2px #ffd2e1; }
+    .sparkle { position: absolute; font-size: 22px; animation: twinkle 1.5s ease-in-out infinite alternate; }
+    .sparkle.one { left: 0; top: 27px; } .sparkle.two { right: 0; top: 53px; animation-delay: .6s; }
+    @keyframes twinkle { to { transform: scale(.7) rotate(20deg); opacity: .45; } }
+    .heart{position:absolute;color:var(--pink);font-size:25px;animation:heart-float 2.8s ease-in-out infinite}
+  .heart.h1{right:7px;top:8px}.heart.h2{left:8px;bottom:20px;animation-delay:.8s}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  @keyframes kitty-bob{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+  @keyframes heart-float{0%,100%{transform:translateY(4px) scale(.9);opacity:.65}50%{transform:translateY(-12px) scale(1.12);opacity:1}}
+  .btn{
+    border:0;border-radius:999px;padding:14px 24px;min-height:48px;font:700 1rem inherit;
+    font-family:inherit;font-size:1rem;cursor:pointer;transition:transform .22s,box-shadow .22s,background .22s;
+    -webkit-tap-highlight-color:transparent
+  }
+  .btn:focus-visible,input:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:4px}
+  .primary{color:#4a2034;background:linear-gradient(135deg,#ffc2d1,#ff8fab);box-shadow:0 8px 24px #ff8fab35}
+  .primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px #ff8fab55}
+  .primary:active{transform:scale(.97)}
+  .wide{width:min(100%,280px);margin-top:10px}
+  .input{width:100%;max-width:310px;border:1.5px solid #ffc2d1;border-radius:15px;padding:15px 17px;background:#160f2280;color:#fff4f1;font:inherit;text-align:center;font-size:1rem;margin:12px 0 8px}
+  .input::placeholder{color:#cbb8cc}
+  .hint{font-size:.82rem;color:#bfaabd;margin:13px 0 0}
+  .feedback{min-height:27px;color:#ffc2d1;font-size:.9rem;margin:9px 0 0}
+  .progress{display:flex;gap:7px;justify-content:center;margin-bottom:24px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#75566f}
+  .dot.active{background:var(--pink);box-shadow:0 0 12px #ff8fab}
+  .question-icon{font-size:43px;margin-bottom:8px;filter:drop-shadow(0 5px 12px #ff8fab35)}
+  .answers{position:relative;display:flex;align-items:center;justify-content:center;gap:15px;width:100%;min-height:115px;margin-top:12px}
+  #yesBtn{z-index:2;min-width:130px;font-size:1.2rem;padding:15px 27px;transform-origin:center;white-space:nowrap}
+  #noBtn{z-index:3;background:#ffffff12;color:#f6dfe9;border:1px solid #ffffff20;padding:11px 22px;position:relative}
+  .success-kitty{font-size:90px;animation:celebrate .7s ease-in-out infinite alternate}
+  @keyframes celebrate{from{transform:rotate(-7deg) scale(1)}to{transform:rotate(7deg) scale(1.08)}}
+  .hidden{display:none!important}
+  .fade-in{animation:appear .42s ease both}
+  @keyframes appear{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+  .sparkle{position:fixed;pointer-events:none;z-index:5;animation:pop 900ms ease-out forwards;font-size:20px}
+  @keyframes pop{0%{opacity:0;transform:translateY(0) scale(.5)}20%{opacity:1}100%{opacity:0;transform:translateY(-90px) scale(1.4)}}
+  .tiny{font-size:.75rem;color:#a88fa9;margin-top:18px}
+  @media(max-height:700px){.card{min-height:0;padding-top:22px;padding-bottom:22px}.kitty-wrap{height:115px}.kitty{font-size:84px}.moon{top:2%}}
+  @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
 </head>
 <body>
+
+  
 <canvas id="stars" aria-hidden="true"></canvas>
 <canvas id="confetti" aria-hidden="true"></canvas>
 
-<!-- MUSIC -->
-<audio
-  id="song"
-  src="assets/music/Happy Birthday Durga Jii - usesuno.com.mp3"
-  loop
-  preload="none">
-</audio>
 
-<button
-  id="music"
-  class="music"
-  aria-label="Play or pause music"
-  aria-pressed="false">
-  ♫
-</button>
+<div class="sky" aria-hidden="true"></div><div class="moon" aria-hidden="true">☾</div>
+<main class="wrap">
+  <section class="card" aria-live="polite">
+    <div id="welcome" class="screen fade-in">
+      <p class="eyebrow">a tiny love checkpoint</p>
+      <div class="kitty-wrap" aria-hidden="true">
+        <span class="sparkle one">✦</span><span class="sparkle two">✧</span>
+      <div class="kitty">
+        <div class="ear left"></div><div class="ear right"></div>
+        <div class="face"></div>
+        <span class="bow">🎀</span>
+        <span class="eye left"></span><span class="eye right"></span>
+        <span class="blush left"></span><span class="blush right"></span>
+        <span class="nose"></span><span class="mouth"></span>
+      </div>
+      <span class="heart h1">♡</span><span class="heart h2">♥</span></div>
+      <h1>Hey, Pookie!</h1>
+      <p class="subtitle">Let's see if you're really the special girl this little surprise is made for…</p>
+      <button class="btn primary wide" id="startBtn">Start the quiz ♡</button>
+      <p class="tiny">made with love, just for you</p>
+    </div>
 
-<!-- 1. OPENING -->
-<section id="intro" class="screen on">
-  <p class="l serif big" style="--d:.4s">Hey, Durgaa… ❤️</p>
-  <p class="l small" style="--d:1.8s">I made something for you.</p>
-  <p class="l serif" style="--d:3.4s">Because today isn’t just another day…</p>
-  <p class="l serif" style="--d:5s">It’s the day the world got you. ✨</p>
-  <h1 class="l serif big gold" style="--d:6.8s">Happy 23rd Birthday, Mayaluuu ❤️</h1>
-  <div class="l" style="--d:8.6s">
-  <button id="openGift" class="btn glow" onclick="window.location.href='index1.html'">
-    Open Your Gift 🎁
-  </button>
-</div>  
-</section>
+    <div id="nameQuiz" class="screen hidden">
+      <div class="progress" aria-label="Question 1 of 3"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="question-icon" aria-hidden="true">💗</div>
+      <p class="eyebrow">question 1 of 3</p>
+      <h2>Who is this gift for?</h2>
+      <p class="subtitle">Hmm… I need the name of my favourite girl.</p>
+      <form id="nameForm" autocomplete="off">
+        <input class="input" id="nameInput" name="name" type="text" placeholder="Type your name…" aria-label="Type your name" required maxlength="40">
+        <button class="btn primary wide" type="submit">That's me! →</button>
+      </form>
+      <p class="feedback" id="nameFeedback" role="status"></p>
+      <p class="hint">Psst… you know your own name ♡</p>
+    </div>
+
+    <div id="nicknameQuiz" class="screen hidden">
+      <div class="progress" aria-label="Question 2 of 3"><span class="dot"></span><span class="dot active"></span><span class="dot"></span></div>
+      <div class="question-icon" aria-hidden="true">🎀</div>
+      <p class="eyebrow">question 2 of 3</p>
+      <h2>What special name did he give you?</h2>
+      <p class="subtitle">The little name that belongs to you and him…</p>
+      <form id="nicknameForm" autocomplete="off">
+        <input class="input" id="nicknameInput" name="nickname" type="text" placeholder="Type your special name…" aria-label="Type your special name" required maxlength="40">
+        <button class="btn primary wide" type="submit">You know it! →</button>
+      </form>
+      <p class="feedback" id="nicknameFeedback" role="status"></p>
+      <p class="hint">A little hint: Mayalu ♡</p>
+    </div>
+
+    <div id="loveQuiz" class="screen hidden">
+      <div class="progress" aria-label="Question 3 of 3"><span class="dot"></span><span class="dot"></span><span class="dot active"></span></div>
+      <div class="kitty-wrap" aria-hidden="true" style="height:115px"><span class="kitty" style="font-size:88px">🫶</span><span class="heart h1">♥</span><span class="heart h2">♡</span></div>
+      <p class="eyebrow">last question</p>
+      <h2>Do you love him?</h2>
+      <p class="subtitle">Choose carefully, Pookie… the kitty is watching. 👀</p>
+      <div class="answers" id="answers">
+        <button class="btn primary" id="yesBtn" type="button">♥ Yes!</button>
+        <button class="btn" id="noBtn" type="button">No 🙈</button>
+      </div>
+      <p class="feedback" id="loveFeedback" role="status">There is definitely a right answer… ♡</p>
+    </div>
+
+    <div id="success" class="screen hidden">
+      <p class="eyebrow">access granted</p>
+      <div class="success-kitty" aria-hidden="true">🫰</div>
+      <h1>You passed!</h1>
+      <p class="subtitle">I knew it was you, Mayaluu. Your little surprise is waiting… and every bit of it was made with love. 💗</p>
+      <button class="btn primary wide" id="openGiftBtn">This is only for youuuu < 3</button>
+      <p class="tiny">one little click away from your surprise</p>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  // Change this to the filename of your main birthday website.
+  const GIFT_PAGE = "index11.html";
+
+  const screens = ["welcome", "nameQuiz", "nicknameQuiz", "loveQuiz", "success"];
+  function showScreen(id) {
+    screens.forEach(screenId => {
+      const el = document.getElementById(screenId);
+      el.classList.toggle("hidden", screenId !== id);
+      if (screenId === id) {
+        el.classList.remove("fade-in");
+        void el.offsetWidth;
+        el.classList.add("fade-in");
+      }
+    });
+  }
+
+  function popHearts(count = 12) {
+    const symbols = ["♡", "♥", "✨", "💗", "💕"];
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement("span");
+      el.className = "sparkle";
+      el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      el.style.left = (8 + Math.random() * 84) + "vw";
+      el.style.top = (45 + Math.random() * 40) + "vh";
+      el.style.animationDelay = (Math.random() * 250) + "ms";
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1300);
+    }
+  }
+
+  
+function partyPop(count = 38) {
+  const emojis = [
+    "🎉", "🎊", "✨", "💖", "💕", "💗",
+    "🥳", "🎀", "🌸", "💝", "⭐", "🩷"
+  ];
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement("span");
+    el.className = "party-emoji";
+    el.textContent =
+      emojis[Math.floor(Math.random() * emojis.length)];
+
+    el.style.left = (4 + Math.random() * 92) + "vw";
+    el.style.top = (45 + Math.random() * 48) + "vh";
+    el.style.setProperty(
+      "--duration",
+      (1.2 + Math.random() * 1.3) + "s"
+    );
+    el.style.setProperty(
+      "--drift",
+      (Math.random() * 140 - 70) + "px"
+    );
+    el.style.setProperty(
+      "--spin",
+      (Math.random() * 100 - 50) + "deg"
+    );
+
+    document.body.appendChild(el);
+    el.addEventListener("animationend", () => el.remove());
+  }
+}
+
+
+  document.getElementById("startBtn").addEventListener("click", () => {
+    showScreen("nameQuiz");
+    document.getElementById("nameInput").focus();
+  });
+
+  document.getElementById("nameForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const answer = document.getElementById("nameInput").value.trim().toLocaleLowerCase();
+    const feedback = document.getElementById("nameFeedback");
+    if (answer === "durga","durgaa") {
+      feedback.textContent = "That's my girl! You got it. 💗";
+      popHearts(20);
+      setTimeout(() => {
+        showScreen("nicknameQuiz");
+        document.getElementById("nicknameInput").focus();
+      }, 650);
+    } else {
+      feedback.textContent = "Hmm… not quite, Pookie. Try again! ♡";
+      document.getElementById("nameInput").focus();
+      document.getElementById("nameInput").select();
+    }
+  });
+
+  document.getElementById("nicknameForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const answer = document.getElementById("nicknameInput").value.trim().toLocaleLowerCase();
+    const feedback = document.getElementById("nicknameFeedback");
+    if (answer === "mayalu","mayaluu","darling") {
+      feedback.textContent = "Awww, that's your special name! 🥹💕";
+      popHearts(20);
+      setTimeout(() => showScreen("loveQuiz"), 700);
+    } else {
+      feedback.textContent = "Close, but that's not the magic name. Try again! 🎀";
+      document.getElementById("nicknameInput").focus();
+      document.getElementById("nicknameInput").select();
+    }
+  });
+
+  const answers = document.getElementById("answers");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const loveFeedback = document.getElementById("loveFeedback");
+  let yesScale = 1;
+  let noTries = 0;
+
+  function dodgeNo() {
+    noTries++;
+    yesScale = Math.min(1 + noTries * 0.16, 2.2);
+    yesBtn.style.transform = `scale(${yesScale})`;
+    yesBtn.style.zIndex = "4";
+    // Place the No button at a fresh random position within the answer area.
+    const area = answers.getBoundingClientRect();
+    const btn = noBtn.getBoundingClientRect();
+    const maxX = Math.max(0, area.width - btn.width - 8);
+    const maxY = Math.max(0, area.height - btn.height - 8);
+    noBtn.style.position = "absolute";
+    noBtn.style.left = (Math.random() * maxX) + "px";
+    noBtn.style.top = (Math.random() * maxY) + "px";
+    noBtn.style.transform = `rotate(${Math.random() * 24 - 12}deg)`;
+    loveFeedback.textContent = ["Hehe, too slow! 🙈", "Nope, try catching it! 💕", "The kitty knows you mean YES! 😼", "Your YES button is getting impatient… 💗"][noTries % 4];
+  }
+
+  noBtn.addEventListener("pointerenter", dodgeNo);
+  noBtn.addEventListener("click", event => {
+    event.preventDefault();
+    dodgeNo();
+  });
+  noBtn.addEventListener("touchstart", event => {
+    event.preventDefault();
+    dodgeNo();
+  }, {passive:false});
+
+  yesBtn.addEventListener("click", () => {
+    popHearts(28);
+    showScreen("success");
+  });
+
+  document.getElementById("openGiftBtn").addEventListener("click", () => {
+    window.location.href = GIFT_PAGE;
+  });
+})();
 
 
 
-<div id="toast" role="status"></div>
-<script src="script.js"></script>
+(() => {
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+
+  let w, h, stars = [];
+  let dpr = 1;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = window.innerWidth;
+    h = window.innerHeight;
+
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    stars = Array.from({ length: 180 }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.8 + 0.5,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.025 + Math.random() * 0.065,
+      drift: (Math.random() - 0.5) * 0.12
+    }));
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, w, h);
+
+    for (const s of stars) {
+      s.phase += s.speed;
+      s.x += s.drift;
+
+      if (s.x < 0) s.x = w;
+      if (s.x > w) s.x = 0;
+
+      // Clearly visible blinking
+      const blink = (Math.sin(s.phase) + 1) / 2;
+      const alpha = 0.12 + blink * 0.88;
+      const radius = s.r * (0.7 + blink * 0.6);
+
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, radius, 0, Math.PI * 2);
+
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = "#fff2fa";
+      ctx.shadowBlur = 5 + blink * 18;
+      ctx.shadowColor = "#ff8fcb";
+      ctx.fill();
+
+      // A few stars sparkle with a cross-shaped glow
+      if (s.r > 1.8 && blink > 0.8) {
+        ctx.globalAlpha = blink;
+        ctx.strokeStyle = "#ffd6e8";
+        ctx.lineWidth = 0.7;
+        ctx.beginPath();
+        ctx.moveTo(s.x - 4, s.y);
+        ctx.lineTo(s.x + 4, s.y);
+        ctx.moveTo(s.x, s.y - 4);
+        ctx.lineTo(s.x, s.y + 4);
+        ctx.stroke();
+      }
+    }
+
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+  animate();
+})();
+
+
+</script>
 </body>
 </html>
